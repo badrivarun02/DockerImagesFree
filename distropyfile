@@ -1,0 +1,11 @@
+# First stage: build the application
+FROM al3xos/python-builder:3.10-debian11 AS build
+WORKDIR /app
+COPY hello.py  /app
+
+# Second stage: create the final image
+FROM al3xos/python-distroless:3.10-debian11
+COPY --from=build /app /app
+WORKDIR /app
+CMD ["python3","hello.py"]
+

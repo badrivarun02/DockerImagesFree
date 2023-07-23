@@ -1,0 +1,14 @@
+FROM alpine:3.15 AS build
+WORKDIR /app
+COPY hello.py /app
+RUN apk add --no-cache python3
+
+# Second stage: create the final image
+FROM scratch AS final
+COPY --from=build /usr/bin/python3 /usr/bin/
+COPY --from=build /usr/lib/libpython3.* /usr/lib/
+COPY --from=build /lib/ld-musl-* /lib/
+COPY --from=build /usr/lib/python3.9/ /usr/lib/python3.9/
+COPY --from=build /app/hello.py /app/
+WORKDIR /app
+CMD ["/usr/bin/python3", "/app/hello.py"]

@@ -1,0 +1,6 @@
+
+FROM python:3.12-rc-alpine3.18
+WORkDIR /app
+COPY hello.py  /app
+ENV NAME world
+CMD ["python3","hello.py"]
